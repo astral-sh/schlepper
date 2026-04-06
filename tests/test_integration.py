@@ -127,9 +127,7 @@ class TestIntegrationDeploy:
         (tmp_path / "_headers").write_text("/*\n  X-Schlepper-Test: true\n")
         (tmp_path / "_redirects").write_text("/old /index.html 301\n")
 
-        result = _deploy(
-            tmp_path, commit_message="integration test: special files"
-        )
+        result = _deploy(tmp_path, commit_message="integration test: special files")
 
         assert result.status == "success"
 
@@ -156,18 +154,14 @@ class TestIntegrationDeploy:
         (tmp_path / "index.html").write_text(
             "<!doctype html><html><body>version-one</body></html>"
         )
-        result = _deploy(
-            tmp_path, commit_message="integration test: overwrite v1"
-        )
+        result = _deploy(tmp_path, commit_message="integration test: overwrite v1")
         assert result.status == "success"
 
         # Overwrite with new content.
         (tmp_path / "index.html").write_text(
             "<!doctype html><html><body>version-two</body></html>"
         )
-        result = _deploy(
-            tmp_path, commit_message="integration test: overwrite v2"
-        )
+        result = _deploy(tmp_path, commit_message="integration test: overwrite v2")
         assert result.status == "success"
 
         # CDN may serve stale content briefly after a new deploy.

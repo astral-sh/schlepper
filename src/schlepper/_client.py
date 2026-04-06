@@ -113,7 +113,7 @@ class CloudflareClient:
                     "X-Auth-Key": key,
                     "X-Auth-Email": email,
                 }
-            case _:
+            case _:  # pragma: no cover
                 raise AssertionError("unreachable")
 
     @staticmethod

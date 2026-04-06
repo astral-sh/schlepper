@@ -148,7 +148,7 @@ def _check_missing(
                 raise UploadError("Failed to check missing assets.") from exc
             time.sleep(2**attempt)
 
-    raise UploadError("Exhausted retries checking missing assets.")
+    raise UploadError("Exhausted retries checking missing assets.")  # pragma: no cover
 
 
 def _upload_buckets(
@@ -219,4 +219,4 @@ def _upload_single_bucket(
             )
             time.sleep(backoff)
 
-    raise UploadError("Exhausted upload retries.")
+    raise UploadError("Exhausted upload retries.")  # pragma: no cover

@@ -43,3 +43,8 @@ class TestJWT:
     def test_invalid_jwt_raises(self) -> None:
         with pytest.raises(AuthenticationError):
             is_jwt_expired("not-a-jwt")
+
+    def test_corrupt_jwt_payload(self) -> None:
+        """JWT with invalid base64 payload should raise."""
+        with pytest.raises(AuthenticationError, match="Failed to decode"):
+            is_jwt_expired("header.!!!invalid!!!.sig")

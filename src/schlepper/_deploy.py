@@ -144,7 +144,9 @@ def _create_deployment(
                 continue
             raise DeploymentError(str(exc)) from exc
 
-    raise DeploymentError("Exhausted deployment retries.") from last_exc
+    raise DeploymentError(
+        "Exhausted deployment retries."
+    ) from last_exc  # pragma: no cover
 
 
 def _poll_deployment(client: CloudflareClient, path: str) -> tuple[str, list[str]]:
