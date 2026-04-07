@@ -4,7 +4,7 @@ A Python library for deploying static assets to [Cloudflare Pages](https://pages
 
 ## Installation
 
-```console
+```bash
 uv add schlepper
 ```
 
@@ -35,7 +35,7 @@ credentials = schlepper.ApiKey(key="your-global-api-key", email="you@example.com
 
 Linting/formatting/type checking:
 
-```console
+```bash
 uv run ruff check
 uv run ruff format --check
 uv run ty check
@@ -43,7 +43,7 @@ uv run ty check
 
 Unit testing:
 
-```console
+```bash
 uv run pytest
 # with coverage
 uv run coverage run -m pytest
@@ -51,10 +51,16 @@ uv run coverage run -m pytest
 
 Integration tests (requires Cloudflare credentials):
 
-```console
+```bash
 # see it.env.example
 export $(cat it.env | xargs)
 uv run pytest -m integration
+```
+
+Build docs:
+
+```bash
+uv run sphinx-build -b html docs docs/_build/html
 ```
 
 ## Licence
