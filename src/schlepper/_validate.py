@@ -52,6 +52,9 @@ def validate_directory(
     entries: list[FileEntry] = []
 
     for path in sorted(directory.rglob("*")):
+        # NOTE: wrangler follows symlinks (its stat + isSymbolicLink check
+        # is effectively dead code). We intentionally skip them to avoid
+        # accidentally uploading files outside the deploy directory.
         if not path.is_file() or path.is_symlink():
             continue
 
