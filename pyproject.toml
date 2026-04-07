@@ -3,14 +3,9 @@ name = "schlepper"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
-authors = [
-    { name = "William Woodruff", email = "william@astral.sh" }
-]
+authors = [{ name = "William Woodruff", email = "william@astral.sh" }]
 requires-python = ">=3.14"
-dependencies = [
-    "blake3>=1.0.8",
-    "urllib3>=2.6.3",
-]
+dependencies = ["blake3>=1.0.8", "urllib3>=2.6.3"]
 
 [build-system]
 requires = ["uv_build>=0.11.2,<0.12.0"]
@@ -22,10 +17,8 @@ markers = [
     "integration: integration tests that hit the Cloudflare API (use -m integration to run)",
 ]
 
+[tool.uv]
+exclude-newer = "P30D"
+
 [dependency-groups]
-dev = [
-    "coverage>=7.13.5",
-    "pytest>=9.0.2",
-    "ruff>=0.15.9",
-    "ty>=0.0.29",
-]
+dev = ["coverage>=7.13.5", "pytest>=9.0.2", "ruff>=0.15.9", "ty>=0.0.29"]
