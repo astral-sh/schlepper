@@ -1,11 +1,19 @@
 [project]
 name = "schlepper"
 version = "0.1.0"
-description = "Add your description here"
+description = "A pure-Python version of `wrangler pages deploy`"
 readme = "README.md"
 authors = [{ name = "William Woodruff", email = "william@astral.sh" }]
 requires-python = ">=3.14"
 dependencies = ["blake3>=1.0.8", "urllib3>=2.6.3"]
+license = "MIT OR Apache-2.0"
+license-files = ["LICENSE-MIT", "LICENSE-APACHE"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+]
 
 [build-system]
 requires = ["uv_build>=0.11.2,<0.12.0"]
