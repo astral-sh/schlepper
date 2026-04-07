@@ -17,6 +17,6 @@ def hash_file(path: Path) -> str:
     """
     content = path.read_bytes()
     b64_content = base64.b64encode(content).decode("ascii")
-    extension = path.suffix.lstrip(".")
+    extension = path.suffix[1:] if path.suffix else ""
     digest = blake3.blake3((b64_content + extension).encode()).hexdigest()
     return digest[:32]
