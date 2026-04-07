@@ -21,7 +21,6 @@ from schlepper._validate import validate_directory
 
 logger = logging.getLogger("schlepper")
 
-# Special files sent as form fields alongside the manifest.
 _SPECIAL_FILES: dict[str, str] = {
     "_headers": "text/plain",
     "_redirects": "text/plain",
@@ -34,7 +33,6 @@ def _truncate_utf8(text: str, max_bytes: int) -> str:
     encoded = text.encode("utf-8")
     if len(encoded) <= max_bytes:
         return text
-    # Truncate at a valid character boundary.
     return encoded[:max_bytes].decode("utf-8", errors="ignore")
 
 
@@ -61,11 +59,9 @@ def deploy(
     directory = Path(directory).resolve()
     client = CloudflareClient(credentials)
 
-    # 1. Validate directory.
     files = validate_directory(directory)
     logger.info("Validated %d files in %s.", len(files), directory)
 
-    # 2. Upload assets.
     manifest = upload_assets(
         client,
         files,
@@ -74,7 +70,6 @@ def deploy(
     )
     logger.info("Upload complete. Manifest has %d entries.", len(manifest))
 
-    # 3. Build multipart form for deployment creation.
     fields: dict[str, object] = {
         "manifest": json.dumps(manifest),
     }
@@ -90,13 +85,11 @@ def deploy(
     if commit_dirty is not None:
         fields["commit_dirty"] = str(commit_dirty).lower()
 
-    # Attach special files if present in the deploy directory.
     for filename, content_type in _SPECIAL_FILES.items():
         path = directory / filename
         if path.is_file():
             fields[filename] = (filename, path.read_bytes(), content_type)
 
-    # 4. Create deployment with retries.
     deploy_path = f"/accounts/{account_id}/pages/projects/{project_name}/deployments"
     result = _create_deployment(client, deploy_path, fields)
 
@@ -106,7 +99,6 @@ def deploy(
 
     logger.info("Deployment %s created (%s).", deployment_id, environment)
 
-    # 5. Poll for terminal status.
     status, aliases = _poll_deployment(client, deploy_path + f"/{deployment_id}")
 
     return Deployment(
