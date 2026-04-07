@@ -1,5 +1,8 @@
 # schlepper
 
+[![Actions status](https://github.com/astral-sh/schlepper/actions/workflows/ci.yml/badge.svg)](https://github.com/astral-sh/schlepper/actions)
+[![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?logo=discord&logoColor=white)](https://discord.gg/astral-sh)
+
 A Python library for deploying static assets to [Cloudflare Pages](https://pages.cloudflare.com/).
 
 ## Installation
@@ -73,7 +76,7 @@ schlepper is licensed under either of
 at your option.
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
-for inclusion in tsayt by you, as defined in the Apache-2.0 license, shall be
+for inclusion in schlepper by you, as defined in the Apache-2.0 license, shall be
 dually licensed as above, without any additional terms or conditions.
 
 <div align="center">
