@@ -12,10 +12,10 @@ requires = ["uv_build>=0.11.2,<0.12.0"]
 build-backend = "uv_build"
 
 [tool.pytest]
-addopts = ["-m 'not integration'"]
 markers = [
     "integration: integration tests that hit the Cloudflare API (use -m integration to run)",
 ]
+addopts = ["-m", "not integration", "--strict-markers"]
 
 [tool.uv]
 exclude-newer = "P14D"
