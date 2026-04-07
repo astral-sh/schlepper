@@ -18,7 +18,7 @@ markers = [
 ]
 
 [tool.uv]
-exclude-newer = "P30D"
+exclude-newer = "P14D"
 
 [dependency-groups]
 dev = ["coverage>=7.13.5", "pytest>=9.0.2", "ruff>=0.15.9", "ty>=0.0.29"]
