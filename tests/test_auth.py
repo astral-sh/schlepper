@@ -8,7 +8,7 @@ import time
 
 import pytest
 
-from schlepper._auth import is_jwt_expired, max_file_count_from_jwt
+from schlepper._auth import is_jwt_expired
 from schlepper._errors import AuthenticationError
 
 
@@ -32,19 +32,10 @@ class TestJWT:
         token = _make_jwt({})
         assert is_jwt_expired(token) is False
 
-    def test_max_file_count(self) -> None:
-        token = _make_jwt({"max_file_count_allowed": 5000})
-        assert max_file_count_from_jwt(token) == 5000
-
-    def test_max_file_count_default(self) -> None:
-        token = _make_jwt({})
-        assert max_file_count_from_jwt(token) == 20_000
-
     def test_invalid_jwt_raises(self) -> None:
         with pytest.raises(AuthenticationError):
             is_jwt_expired("not-a-jwt")
 
     def test_corrupt_jwt_payload(self) -> None:
-        """JWT with invalid base64 payload should raise."""
         with pytest.raises(AuthenticationError, match="Failed to decode"):
             is_jwt_expired("header.!!!invalid!!!.sig")

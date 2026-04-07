@@ -49,7 +49,6 @@ def _build_buckets(files: list[FileEntry]) -> list[list[FileEntry]]:
             buckets.append([entry])
             bucket_sizes.append(entry.size)
 
-    # Drop empty buckets.
     return [b for b in buckets if b]
 
 
@@ -63,22 +62,11 @@ def upload_assets(
     """Upload assets and return the deployment manifest.
 
     The manifest maps ``"/relative/path"`` to the 32-character content hash.
-
-    Steps:
-
-    1. Fetch an upload JWT.
-    2. Check which file hashes are missing on the server.
-    3. Distribute missing files into upload buckets.
-    4. Upload buckets concurrently.
-    5. Upsert all hashes.
-    6. Return the manifest.
     """
     if not files:
         return {}
 
     jwt = client.get_upload_token(account_id, project_name)
-
-    # -- check missing --------------------------------------------------------
 
     all_hashes = [f.hash for f in files]
     hash_to_file: dict[str, FileEntry] = {f.hash: f for f in files}
@@ -88,17 +76,12 @@ def upload_assets(
     )
     missing_files = [hash_to_file[h] for h in missing_hashes if h in hash_to_file]
 
-    # -- upload missing files -------------------------------------------------
-
     if missing_files:
         buckets = _build_buckets(missing_files)
         logger.info(
             "Uploading %d files in %d bucket(s).", len(missing_files), len(buckets)
         )
-
         jwt = _upload_buckets(client, buckets, jwt, account_id, project_name)
-
-    # -- upsert hashes --------------------------------------------------------
 
     try:
         client.request_with_jwt(
@@ -109,8 +92,6 @@ def upload_assets(
         )
     except APIError:
         logger.warning("Failed to upsert hashes; deployment may still succeed.")
-
-    # -- build manifest -------------------------------------------------------
 
     manifest: dict[str, str] = {}
     for entry in files:
@@ -160,12 +141,12 @@ def _upload_buckets(
 ) -> str:
     """Upload all buckets concurrently. Returns the (possibly refreshed) JWT."""
     with ThreadPoolExecutor(max_workers=BULK_UPLOAD_CONCURRENCY) as pool:
-        futures = {
+        futures = [
             pool.submit(
                 _upload_single_bucket, client, bucket, jwt, account_id, project_name
-            ): i
-            for i, bucket in enumerate(buckets)
-        }
+            )
+            for bucket in buckets
+        ]
         for future in as_completed(futures):
             jwt = future.result()
 

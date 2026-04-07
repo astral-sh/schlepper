@@ -21,21 +21,14 @@ class CloudflareClient:
         self._credentials = credentials
         self._pool = urllib3.PoolManager()
 
-    # -- public helpers -------------------------------------------------------
-
     def request(
         self,
         method: str,
         path: str,
         *,
         body: dict[str, Any] | list[Any] | None = None,
-        query: dict[str, str] | None = None,
     ) -> Any:
-        """Make an API-token-authenticated request and return the unwrapped ``result``.
-
-        *path* is relative to the Cloudflare API base URL
-        (e.g. ``"/accounts/…/pages/projects"``).
-        """
+        """Make an API-token-authenticated request and return the unwrapped ``result``."""
         url = CF_API_BASE_URL + path
         headers = self._auth_headers()
         encoded_body: bytes | None = None
@@ -43,13 +36,7 @@ class CloudflareClient:
             encoded_body = json.dumps(body).encode()
             headers["Content-Type"] = "application/json"
 
-        resp = self._pool.request(
-            method,
-            url,
-            body=encoded_body,
-            headers=headers,
-            fields=query if method == "GET" and query else None,
-        )
+        resp = self._pool.request(method, url, body=encoded_body, headers=headers)
         return self._unwrap(resp)
 
     def request_with_jwt(
@@ -78,19 +65,10 @@ class CloudflareClient:
         path: str,
         fields: dict[str, Any],
     ) -> Any:
-        """POST multipart form data with API-token authentication.
-
-        *fields* values may be strings or ``(filename, data, content_type)``
-        tuples for file uploads.
-        """
+        """POST multipart form data with API-token authentication."""
         url = CF_API_BASE_URL + path
         headers = self._auth_headers()
-        resp = self._pool.request(
-            "POST",
-            url,
-            fields=fields,
-            headers=headers,
-        )
+        resp = self._pool.request("POST", url, fields=fields, headers=headers)
         return self._unwrap(resp)
 
     def get_upload_token(self, account_id: str, project_name: str) -> str:
@@ -101,8 +79,6 @@ class CloudflareClient:
         )
         jwt: str = result["jwt"]
         return jwt
-
-    # -- internals ------------------------------------------------------------
 
     def _auth_headers(self) -> dict[str, str]:
         match self._credentials:
@@ -118,10 +94,7 @@ class CloudflareClient:
 
     @staticmethod
     def _unwrap(resp: urllib3.BaseHTTPResponse) -> Any:
-        """Parse the Cloudflare API envelope and return ``result``.
-
-        Raises :class:`APIError` on non-success responses.
-        """
+        """Parse the Cloudflare API envelope and return ``result``."""
         try:
             data: dict[str, Any] = json.loads(resp.data)
         except (json.JSONDecodeError, ValueError) as exc:
