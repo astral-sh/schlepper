@@ -30,7 +30,7 @@ markers = [
 addopts = ["-m", "not integration", "--strict-markers"]
 
 [tool.uv]
-exclude-newer = "P14D"
+exclude-newer = "P7D"
 # Don't perform cooldowns of our own tools.
 exclude-newer-package = { ruff = false, ty = false }
 
