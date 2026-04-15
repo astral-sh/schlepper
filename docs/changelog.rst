@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.1.1
+-----
+
+- Update the PyPI metadata to include project URLs
+
 0.1.0
 -----
 
