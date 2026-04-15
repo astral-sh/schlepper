@@ -3,7 +3,7 @@ revision = 3
 requires-python = ">=3.14"
 
 [options]
-exclude-newer = "2026-03-24T14:42:17.892128Z"
+exclude-newer = "2026-04-01T15:36:17.974628Z"
 exclude-newer-span = "P14D"
 
 [options.exclude-newer-package]
@@ -371,7 +371,7 @@ wheels = [
 
 [[package]]
 name = "schlepper"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "." }
 dependencies = [
     { name = "blake3" },

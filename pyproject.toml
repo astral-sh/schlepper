@@ -1,6 +1,6 @@
 [project]
 name = "schlepper"
-version = "0.1.0"
+version = "0.1.1"
 description = "A pure-Python version of `wrangler pages deploy`"
 readme = "README.md"
 authors = [{ name = "William Woodruff", email = "william@astral.sh" }]
