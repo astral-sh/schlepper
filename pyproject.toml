@@ -5,7 +5,7 @@ description = "A pure-Python version of `wrangler pages deploy`"
 readme = "README.md"
 authors = [{ name = "William Woodruff", email = "william@astral.sh" }]
 requires-python = ">=3.14"
-dependencies = ["blake3>=1.0.8", "urllib3>=2.6.3"]
+dependencies = ["blake3>=1.0.8", "urllib3>=2.8.0"]
 license = "MIT OR Apache-2.0"
 license-files = ["LICENSE-MIT", "LICENSE-APACHE"]
 classifiers = [
